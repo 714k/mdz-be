@@ -21,7 +21,7 @@ from app.core.monitoring import (
     http_request_duration_seconds,
     update_redis_metrics_sync,
 )
-from app.api.v1 import auth, health
+from app.api.v1 import auth, health, websocket
 
 
 @asynccontextmanager
@@ -123,6 +123,7 @@ async def log_requests(request: Request, call_next):
 # Include routers
 app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
 app.include_router(health.router, prefix=settings.API_V1_PREFIX)
+app.include_router(websocket.ws_router, prefix=settings.API_V1_PREFIX)
 
 
 # Prometheus metrics endpoint
