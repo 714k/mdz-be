@@ -2,13 +2,12 @@
 
 set -e
 
-cd backend
-
 # Activate virtual environment
-source venv/bin/activate
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate mdz
 
 # Start services with Docker Compose
-docker-compose -f ../docker/docker-compose.yml up -d postgres redis
+docker compose -f ../mdz-infra/docker-compose.yml up -d postgres redis
 
 # Wait for services
 sleep 5
