@@ -30,8 +30,8 @@ async def handle_chat_message(
     request_id = message.get("request_id")
     payload = message.get("payload", {})
     content = payload.get("content")
-    model = message.get("model", "meta-llama/Llama-2-7b-chat-hf")
-    context = message.get("context", {})
+    model = payload.get("model", message.get("model", "meta-llama/Llama-2-7b-chat-hf"))
+    context = payload.get("context", {})
 
     logger.info(
         "chat_message_received", user_id=user_id, request_id=request_id, model=model
@@ -43,7 +43,9 @@ async def handle_chat_message(
         ).model_dump(mode="json")
     )
 
-    response_content = f"{model}, Context items: {len(context)}\nMessage: {content} "
+    response_content = (
+        f"Context: {context}, \nContext items: {len(context)}\nMessage: {content} "
+    )
 
     response = ChatMessageResponse(
         content=response_content, request_id=request_id, model=model
